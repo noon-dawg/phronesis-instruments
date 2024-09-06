@@ -8,13 +8,18 @@
 	</head>
 
 	<body>
-		<div class="support-cause">
+		<div id="donation-form" class="support-cause">
 			<h1 class="heading">Support our cause</h1>
 			<div class="donation-form">
-				<button id="monthly-billing-button" class="btn">Monthly</button>
-				<button id="onetime-billing-button" class="btn">One Time</button>
+				<button id="monthly-billing-switch" class="btn btn-active">Monthly</button>
+				<button id="onetime-billing-switch" class="btn">One Time</button>
 				<input type="number" id="donation-amount"  />
 			</div>
+			<button id="submit" class="btn btn-fullwidth">Dedicate this gift</button>
+		</div>
+		<div id="checkout-form" class="hidden">
+			<div class="rebilly-instruments-summary"></div>
+        	<div class="rebilly-instruments"></div>
 		</div>
 	</body>
 </html>

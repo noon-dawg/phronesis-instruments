@@ -1,13 +1,4 @@
-// RebillyInstruments.mount({
-// 	publishableKey: "pk_sandbox_VGoV6xf8qRVq0FvRkz36BzW2nBjThgXVL_gEXgp",
-// 	organizationId: "phronesis-gulliver-s-gallivants",
-// 	websiteId: "www.rebilly.com-",
-// 	apiMode: "sandbox",
-// 	money: {
-// 		amount: 100,
-// 		currency: "USD",
-// 	},
-// });
+
 // Optional
 RebillyInstruments.on("instrument-ready", (instrument) => {
 	console.info("instrument-ready", instrument);
@@ -18,46 +9,75 @@ RebillyInstruments.on("purchase-completed", (purchase) => {
 
 const state = {
 	billingPeriod: "monthly",
-
-	billingPeriodSwitch: document.getElementById("switch"),
+	donationForm: document.getElementById('donation-form'),
+	checkoutForm: document.getElementById('checkout-form'),
+	donationAmount: null,
+	billingPeriodMonthlySwitch: document.getElementById('monthly-billing-switch'),
+	billingPeriodOnetimeSwitch: document.getElementById('onetime-billing-switch'),
+	submitButton: document.getElementById('submit')
 };
 
-async function handlePlans() {
-	const newBillingPeriod = state.billingPeriod === "monthly" ? "yearly" : "monthly";
-
-	if (newBillingPeriod === "monthly") {
-		await RebillyInstruments.update({
-			items: [
-				{
-					planId: "monthly-membership",
-					quantity: 1,
-				},
-			],
-			bumpOffer: [
-				{
-					planId: "monthly-membership-plat",
-					quantity: 1,
-				},
-			],
-		});
-	} else {
-		await RebillyInstruments.update({
-			items: [
-				{
-					planId: "yearly-membership",
-					quantity: 1,
-				},
-			],
-			bumpOffer: [
-				{
-					planId: "yearly-membership-plat-plan",
-					quantity: 1,
-				},
-			],
-		});
+function handleBillingPeriodButtonClick(newBillingPeriod) {
+	if (state.billingPeriod === newBillingPeriod) {
+		return;
 	}
-	state.billingPeriod = newBillingPeriod;
-	state.billingPeriodSwitch.innerHTML = state.billingPeriod === "monthly" ? "Switch to yearly plan" : "Switch to monthly plan";
+
+	// clear previous active class
+	const buttons = [
+		state.billingPeriodMonthlySwitch,
+		state.billingPeriodOnetimeSwitch
+	];
+
+	buttons.forEach(button => {
+		if (button.classList.contains('btn-active')) {
+			button.classList.remove('btn-active');
+		}
+	})
+
+	// select new active button
+	const activeButton = newBillingPeriod === 'monthly' ? state.billingPeriodMonthlySwitch : state.billingPeriodOnetimeSwitch;
+
+	activeButton.classList.add('btn-active');
+
+	// update billing period
+
+	state.billingPeriod = newBillingPeriod
 }
 
-state.billingPeriodSwitch.addEventListener("click", handlePlans);
+function handleFormSubmission() {
+	const donationAmount = Number(document.getElementById('donation-amount').value);
+
+	if (!donationAmount) {
+		alert('Please enter a donation amount');
+		return;
+	}
+
+	state.donationForm.classList.add('hidden');
+	state.checkoutForm.classList.remove('hidden');
+
+	if (state.billingPeriod === 'onetime') {
+		RebillyInstruments.mount({
+			publishableKey: "pk_sandbox_VGoV6xf8qRVq0FvRkz36BzW2nBjThgXVL_gEXgp",
+			organizationId: "phronesis-gulliver-s-gallivants",
+			websiteId: "www.rebilly.com-",
+			apiMode: "sandbox",
+			money: {
+				amount: donationAmount,
+				currency: "USD",
+			},
+		});
+	} else {
+		// TBD instruments config if monthly
+	}
+}
+
+
+state.billingPeriodMonthlySwitch.addEventListener("click", () => {
+	handleBillingPeriodButtonClick('monthly');
+})
+
+state.billingPeriodOnetimeSwitch.addEventListener("click", () => {
+	handleBillingPeriodButtonClick('onetime');
+})
+
+state.submitButton.addEventListener("click", handleFormSubmission);
