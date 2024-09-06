@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" type="text/css" rel="stylesheet" />
+		<link href="./main.css" type="text/css" rel="stylesheet" />
 		<script src="https://cdn.rebilly.com/instruments/@latest/core.js" type="text/javascript"></script>
 		<script src="./main.js" type="text/javascript" defer></script>
 	</head>
 
 	<body>
-		<h1>Payment form</h1>
-		<div class="rebilly-instruments-summary"></div>
-		<div class="rebilly-instruments"></div>
-		<button id="donate">Support our developer</button>
+		<div class="support-cause">
+			<h1 class="heading">Support our cause</h1>
+			<div class="donation-form">
+				<button id="monthly-billing-button" class="btn">Monthly</button>
+				<button id="onetime-billing-button" class="btn">One Time</button>
+				<input type="number" id="donation-amount"  />
+			</div>
+		</div>
 	</body>
 </html>
