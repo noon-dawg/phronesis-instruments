@@ -21,7 +21,7 @@ const rebilly = RebillyAPI({
 });
 
 app.get('/', async (req, res) => {
-	res.sendFile(path.join(__dirname, 'client/deposit.html'));
+	res.sendFile(path.join(__dirname, '../client/deposit.html'));
 })
 
 app.post("/deposit-request", async function (req, res) {
