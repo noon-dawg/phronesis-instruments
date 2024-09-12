@@ -1,102 +1,83 @@
-// RebillyInstruments.mount({
-// 	publishableKey: "pk_sandbox_VGoV6xf8qRVq0FvRkz36BzW2nBjThgXVL_gEXgp",
-// 	organizationId: "phronesis-gulliver-s-gallivants",
-// 	websiteId: "www.rebilly.com-",
-// 	apiMode: "sandbox",
-// 	paymentInstruments: {
-// 		address: {
-// 			show: ["all"],
-// 			require: ["organization", "address", "address2", "city", "email", "phoneNumber", "region", "postalCode", "country"],
-// 		},
-// 	},
-// 	items: [
-// 		{
-// 			planId: "monthly-membership",
-// 			quantity: 1,
-// 		},
-// 	],
-// 	addons: [
-// 		{
-// 			planId: "personal-travel-plan",
-// 			quantity: 1,
-// 		},
-// 	],
-// 	bumpOffer: [
-// 		{
-// 			planId: "monthly-membership-plat",
-// 			quantity: 1,
-// 		},
-// 	],
-// 	theme: {
-// 		colorPrimary: "#504CCA", // Brand color
-// 		colorText: "#CEE8F3",
-// 		colorDanger: "#cd5c5c",
-// 		colorBackground: "#021311", // Website background color
-// 		buttonColorText: "#1ABBC7",
-// 		fontFamily: "Trebuchet MS, sans-serif", // Website font family
-// 	},
-// });
+const path = require('path');
+const express = require('express')
+const bodyParser = require("body-parser");
+const RebillyAPI = require("rebilly-js-sdk").default;
+const app = express()
+const port = 3000
 
-RebillyInstruments.mount({
-	publishableKey: "pk_sandbox_VGoV6xf8qRVq0FvRkz36BzW2nBjThgXVL_gEXgp",
-	organizationId: "phronesis-gulliver-s-gallivants",
-	websiteId: "www.rebilly.com-",
-	apiMode: "sandbox",
-	money: {
-		amount: 100,
+app.use(express.static("client"));
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const REBILLY_API_SECRET_KEY = "sk_sandbox_2b_u5U5j4Td02oU8pHCKAU94C-qnGMd7_4sX8p9";
+const REBILLY_WEBSITE_ID = "www.rebilly.com-";
+const REBILLY_ORGANIZATION_ID = "phronesis-gulliver-s-gallivants";
+
+const rebilly = RebillyAPI({
+	sandbox: true,
+	apiKey: REBILLY_API_SECRET_KEY,
+	organizationId: REBILLY_ORGANIZATION_ID,
+});
+
+app.get('/', async (req, res) => {
+	res.sendFile(path.join(__dirname, 'client/deposit.html'));
+})
+
+app.post("/deposit-request", async function (req, res) {
+	const { customerId } = req.body;
+
+	const response = {};
+	const data = {
+		mode: "passwordless",
+		customerId,
+	};
+
+	const { fields: login } = await rebilly.customerAuthentication.login({
+		data,
+	});
+
+	const { fields: exchangeToken } = await rebilly.customerAuthentication.exchangeToken({
+		token: login.token,
+		data: {
+			acl: [
+				{
+					scope: {
+						organizationId: [REBILLY_ORGANIZATION_ID],
+					},
+					permissions: ["PostToken", "PostDigitalWalletValidation", "StorefrontGetAccount", "StorefrontPatchAccount", "StorefrontPostPayment", "StorefrontGetTransactionCollection", "StorefrontGetTransaction", "StorefrontGetPaymentInstrumentCollection", "StorefrontPostPaymentInstrument", "StorefrontGetPaymentInstrument", "StorefrontPatchPaymentInstrument", "StorefrontPostPaymentInstrumentDeactivation", "StorefrontGetWebsite", "StorefrontGetInvoiceCollection", "StorefrontGetInvoice", "StorefrontGetProductCollection", "StorefrontGetProduct", "StorefrontPostReadyToPay", "StorefrontGetPaymentInstrumentSetup", "StorefrontPostPaymentInstrumentSetup", "StorefrontGetDepositRequest", "StorefrontGetDepositStrategy", "StorefrontPostDeposit"],
+				},
+			],
+			customClaims: {
+				websiteId: REBILLY_WEBSITE_ID,
+			},
+		},
+	});
+
+	const bookingPrice = 2000;
+
+
+	const requestDepositData = {
+		websiteId: REBILLY_WEBSITE_ID,
+		customerId,
 		currency: "USD",
-	},
-});
-// Optional
-RebillyInstruments.on("instrument-ready", (instrument) => {
-	console.info("instrument-ready", instrument);
-});
-RebillyInstruments.on("purchase-completed", (purchase) => {
-	console.info("purchase-completed", purchase);
-});
+		amounts: [bookingPrice * 0.2, bookingPrice * 0.3, bookingPrice * 0.5],
+		customAmount: { minimum: bookingPrice * 0.2, maximum: 5000, multipleOf: 10 },
+	};
 
-const state = {
-	billingPeriod: "monthly",
+	const { fields: depositFields } = await rebilly.depositRequests.create({
+		data: requestDepositData,
+	});
 
-	billingPeriodSwitch: document.getElementById("switch"),
-};
+	response.token = exchangeToken.token;
+	response.depositRequestId = depositFields.id;
+	res.send(response);
 
-async function handlePlans() {
-	const newBillingPeriod = state.billingPeriod === "monthly" ? "yearly" : "monthly";
+})
 
-	if (newBillingPeriod === "monthly") {
-		await RebillyInstruments.update({
-			items: [
-				{
-					planId: "monthly-membership",
-					quantity: 1,
-				},
-			],
-			bumpOffer: [
-				{
-					planId: "monthly-membership-plat",
-					quantity: 1,
-				},
-			],
-		});
-	} else {
-		await RebillyInstruments.update({
-			items: [
-				{
-					planId: "yearly-membership",
-					quantity: 1,
-				},
-			],
-			bumpOffer: [
-				{
-					planId: "yearly-membership-plat-plan",
-					quantity: 1,
-				},
-			],
-		});
-	}
-	state.billingPeriod = newBillingPeriod;
-	state.billingPeriodSwitch.innerHTML = state.billingPeriod === "monthly" ? "Switch to yearly plan" : "Switch to monthly plan";
-}
 
-state.billingPeriodSwitch.addEventListener("click", handlePlans);
+
+
+app.listen(port, () => {
+	console.log(`Example app listening at http://localhost:${port}`)
+})
