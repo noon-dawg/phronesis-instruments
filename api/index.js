@@ -5,7 +5,7 @@ const RebillyAPI = require("rebilly-js-sdk").default;
 const app = express()
 const port = 3000
 
-app.use(express.static("client"));
+app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
