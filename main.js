@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express')
 const bodyParser = require("body-parser");
 const RebillyAPI = require("rebilly-js-sdk").default;
@@ -16,55 +17,57 @@ const REBILLY_ORGANIZATION_ID = "phronesis-gulliver-s-gallivants";
 const rebilly = RebillyAPI({
 	sandbox: true,
 	apiKey: REBILLY_API_SECRET_KEY,
+	organizationId: REBILLY_ORGANIZATION_ID,
 });
 
-app.get('/deposit', async(req, res) => {
-	res.redirect(301, "/deposit.html");
+app.get('/', async (req, res) => {
+	res.sendFile(path.join(__dirname, 'client/deposit.html'));
 })
 
 app.post("/deposit-request", async function (req, res) {
 	const { customerId } = req.body;
-	console.log(customerId);
+
 	const response = {};
 	const data = {
 		mode: "passwordless",
 		customerId,
 	};
+
 	const { fields: login } = await rebilly.customerAuthentication.login({
 		data,
 	});
 
-	// const { fields: exchangeToken } = await rebilly.customerAuthentication.exchangeToken({
-	// 	token: login.token,
-	// 	data: {
-	// 		acl: [
-	// 			{
-	// 				scope: {
-	// 					organizationId: [REBILLY_ORGANIZATION_ID],
-	// 				},
-	// 				permissions: ["PostToken", "PostDigitalWalletValidation", "StorefrontGetAccount", "StorefrontPatchAccount", "StorefrontPostPayment", "StorefrontGetTransactionCollection", "StorefrontGetTransaction", "StorefrontGetPaymentInstrumentCollection", "StorefrontPostPaymentInstrument", "StorefrontGetPaymentInstrument", "StorefrontPatchPaymentInstrument", "StorefrontPostPaymentInstrumentDeactivation", "StorefrontGetWebsite", "StorefrontGetInvoiceCollection", "StorefrontGetInvoice", "StorefrontGetProductCollection", "StorefrontGetProduct", "StorefrontPostReadyToPay", "StorefrontGetPaymentInstrumentSetup", "StorefrontPostPaymentInstrumentSetup", "StorefrontGetDepositRequest", "StorefrontGetDepositStrategy", "StorefrontPostDeposit"],
-	// 			},
-	// 		],
-	// 		customClaims: {
-	// 			websiteId: REBILLY_WEBSITE_ID,
-	// 		},
-	// 	},
-	// });
+	const { fields: exchangeToken } = await rebilly.customerAuthentication.exchangeToken({
+		token: login.token,
+		data: {
+			acl: [
+				{
+					scope: {
+						organizationId: [REBILLY_ORGANIZATION_ID],
+					},
+					permissions: ["PostToken", "PostDigitalWalletValidation", "StorefrontGetAccount", "StorefrontPatchAccount", "StorefrontPostPayment", "StorefrontGetTransactionCollection", "StorefrontGetTransaction", "StorefrontGetPaymentInstrumentCollection", "StorefrontPostPaymentInstrument", "StorefrontGetPaymentInstrument", "StorefrontPatchPaymentInstrument", "StorefrontPostPaymentInstrumentDeactivation", "StorefrontGetWebsite", "StorefrontGetInvoiceCollection", "StorefrontGetInvoice", "StorefrontGetProductCollection", "StorefrontGetProduct", "StorefrontPostReadyToPay", "StorefrontGetPaymentInstrumentSetup", "StorefrontPostPaymentInstrumentSetup", "StorefrontGetDepositRequest", "StorefrontGetDepositStrategy", "StorefrontPostDeposit"],
+				},
+			],
+			customClaims: {
+				websiteId: REBILLY_WEBSITE_ID,
+			},
+		},
+	});
 
-	// const requestDepositData = {
-	// 	websiteId: REBILLY_WEBSITE_ID,
-	// 	customerId,
-	// 	currency: "USD",
-	// 	amounts: [50, 100],
-	// };
+	const requestDepositData = {
+		websiteId: REBILLY_WEBSITE_ID,
+		customerId,
+		currency: "USD",
+		amounts: [50, 100],
+	};
 
-	// const { fields: depositFields } = await rebilly.depositRequests.create({
-	// 	data: requestDepositData,
-	// });
+	const { fields: depositFields } = await rebilly.depositRequests.create({
+		data: requestDepositData,
+	});
 
-	// response.token = exchangeToken.token;
-	// response.depositRequestId = depositFields.id;
-	// res.send(response);
+	response.token = exchangeToken.token;
+	response.depositRequestId = depositFields.id;
+	res.send(response);
 
 })
 

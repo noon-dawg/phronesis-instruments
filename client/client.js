@@ -1,6 +1,6 @@
 const customerId = "cus_01J5DFFAZZV96Z95BWZJP28Y86";
 
-(async () => {
+async function requestDeposit() {
 	const response = await fetch("/deposit-request", {
 		method: "POST",
 		headers: {
@@ -11,6 +11,13 @@ const customerId = "cus_01J5DFFAZZV96Z95BWZJP28Y86";
 	});
 	const { token, depositRequestId } = await response.json();
 
-	// Mount Rebilly Instruments
+	RebillyInstruments.mount({
+        apiMode: "sandbox",
+        deposit: {
+            depositRequestId,
+        },
+        jwt: token,
+    });
+}
 
-})();
+requestDeposit();
