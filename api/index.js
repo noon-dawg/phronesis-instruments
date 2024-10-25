@@ -54,15 +54,15 @@ app.post("/deposit-request", async function (req, res) {
 		},
 	});
 
-	const bookingPrice = 2000;
+	// const bookingPrice = 2000;
 
 
 	const requestDepositData = {
 		websiteId: REBILLY_WEBSITE_ID,
 		customerId,
-		currency: "USD",
-		amounts: [bookingPrice * 0.2, bookingPrice * 0.3, bookingPrice * 0.5],
-		customAmount: { minimum: bookingPrice * 0.2, maximum: 5000, multipleOf: 10 },
+		currency: "CAD",
+		// amounts: [bookingPrice * 0.2, bookingPrice * 0.3, bookingPrice * 0.5],
+		// customAmount: { minimum: bookingPrice * 0.2, maximum: 5000, multipleOf: 10 },
 	};
 
 	const { fields: depositFields } = await rebilly.depositRequests.create({
