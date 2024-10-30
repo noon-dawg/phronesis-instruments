@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 13: Casino Deposit Payment Methods</title>
+    <img src="/images/logo.png" alt="logo" width="100" height="100">
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .iframe-container {
+            display: none; /* Initially hide the iframe */
+            margin-top: 20px; /* Add some spacing */
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Currency and Deposit</h1>
+    <div>
+        <label for="currency-select">Choose your currency:</label>
+        <select id="currency-select">
+            <option value="">Select a currency</option>
+            <option value="USD">USD - United States Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+        </select>
+        <button id="submit-button">Submit</button> <!-- Added submit button -->
+    </div>
+
+    <iframe id="deposit-iframe" src="/" title="Deposit Page"
+        width="100%" height="800" style="border:none;"></iframe>
+
+    <script src="script.js"></script> <!-- Link to your JS file -->
+    <p><a href="/landing.html">Go to home page</a></p>
+</body>
+</html>

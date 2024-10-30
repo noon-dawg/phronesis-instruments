@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing page</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Phronesis training</h1>
+
+    <!-- Projects -->
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            Projects
+        </div>
+        <div class="accordion-content">
+            <div class="button-container">
+                <a href="/project13.html" class="button">Project 13</a>
+            </div>
+        </div>
+        <!-- <div class="accordion-content">
+            <div class="button-container">
+                <a href="/project14.html" class="button">Project 13</a>
+            </div>
+        </div> -->
+        <!-- <div class="accordion-content">
+            <div class="button-container">
+                <a href="/project15.html" class="button">Project 13</a>
+            </div>
+        </div> -->
+    </div>
+
+    <!-- Debriefs -->
+    <div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+        Debriefs
+    </div>
+    <div class="accordion-content">
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                Project 13: Casino deposit payment methods
+            </div>
+            <div class="accordion-content">
+                <h3>What made you smile?</h3>
+                <p>Teamwork</p>
+
+                <h3>What did you find confusing?</h3>
+                <ol>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>.....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+              </ol>
+            </div>
+        </div>
+        <!-- <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                Project 14:
+            </div>
+            <div class="accordion-content">
+                <h3>What made you smile?</h3>
+                <p>Teamwork</p>
+
+                <h3>What did you find confusing?</h3>
+                <ol>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>..../p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>.....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+              </ol>
+            </div>
+        </div> -->
+        <!-- <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                Project 14:
+            </div>
+            <div class="accordion-content">
+                <h3>What made you smile?</h3>
+                <p>Teamwork</p>
+
+                <h3>What did you find confusing?</h3>
+                <ol>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>..../p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>.....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+                  <li>
+                      <h4>Point...</h4>
+                      <p>....</p>
+                      <img src="" style="width:100%; max-width:300px;">
+                  </li>
+              </ol>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+    <script>
+        // JavaScript function to toggle accordion visibility
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.toggle("active");
+
+            // Toggle display of the content
+            content.style.display = isActive ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

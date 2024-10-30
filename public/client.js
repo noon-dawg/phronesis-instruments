@@ -1,4 +1,4 @@
-const customerId = "cus_01J5DFFAZZV96Z95BWZJP28Y86";
+const customerId = "123456789000";
 
 async function requestDeposit() {
 	const response = await fetch("/deposit-request", {

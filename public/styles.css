@@ -1,0 +1,95 @@
+/* Importing Google Fonts for Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif; /* Changed to Roboto for better readability */
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light gray text */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #3dd3e3; /* Light cyan for headers */
+}
+
+/* Accordion styling */
+.accordion {
+    width: 75%;
+    max-width: 75%;
+    margin: 20px auto;
+    text-align: left;
+    border: 2px solid #00bfff; /* Neon blue border */
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #2a2a2a; /* Darker background for the accordion */
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.5); /* Neon blue shadow */
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3c3c3c; /* Dark background for header */
+    color: #3dd3e3; /* Light cyan text */
+    padding: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    position: relative; /* For neon glow effect */
+    overflow: hidden; /* To avoid glow overflow */
+}
+
+.accordion-header::after {
+    content: "▼";
+    font-size: 1em;
+    color: #3dd3e3; /* Light cyan arrow */
+    transition: transform 0.3s ease;
+}
+
+.accordion-header.active::after {
+    transform: rotate(-180deg);
+}
+
+.accordion-content {
+    display: none;
+    padding: 10px;
+    background-color: #2a2a2a; /* Dark background for content */
+    border-top: 2px solid #00bfff; /* Neon blue border */
+}
+
+/* Button container in accordion */
+.button-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #00bfff; /* Neon blue */
+    color: #1a1a1a; /* Dark text */
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.8); /* Neon blue glow */
+}
+
+.button:hover {
+    background-color: #00d4ff; /* Lighter neon blue on hover */
+}
+
+.iframe-container {
+            display: flex;
+            justify-content: center; /* Centers the iframe horizontally */
+            margin-top: 20px; /* Space above the iframe */
+        }
+
+        iframe {
+            width: 60%; /* Width of the iframe */
+            height: 500px; /* Height of the iframe */
+            border: none; /* Remove border */
+        }
