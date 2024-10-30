@@ -10,9 +10,9 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const REBILLY_API_SECRET_KEY = "sk_sandbox_2b_u5U5j4Td02oU8pHCKAU94C-qnGMd7_4sX8p9";
-const REBILLY_WEBSITE_ID = "www.rebilly.com-";
-const REBILLY_ORGANIZATION_ID = "phronesis-gulliver-s-gallivants";
+const REBILLY_API_SECRET_KEY = "sk_sandbox_rx6yWD9pLkQj1qZ0fEIdZA243uyj4gfMjry3h-F";
+const REBILLY_WEBSITE_ID = "acme.com";
+const REBILLY_ORGANIZATION_ID = "smart-bet-phronesis-training";
 
 const rebilly = RebillyAPI({
 	sandbox: true,
@@ -54,15 +54,10 @@ app.post("/deposit-request", async function (req, res) {
 		},
 	});
 
-	// const bookingPrice = 2000;
-
-
 	const requestDepositData = {
 		websiteId: REBILLY_WEBSITE_ID,
 		customerId,
 		currency: "CAD",
-		// amounts: [bookingPrice * 0.2, bookingPrice * 0.3, bookingPrice * 0.5],
-		// customAmount: { minimum: bookingPrice * 0.2, maximum: 5000, multipleOf: 10 },
 	};
 
 	const { fields: depositFields } = await rebilly.depositRequests.create({
@@ -74,9 +69,6 @@ app.post("/deposit-request", async function (req, res) {
 	res.send(response);
 
 })
-
-
-
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`)
